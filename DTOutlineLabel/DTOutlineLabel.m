@@ -55,6 +55,40 @@
     [super awakeFromNib];
 }
 
+#pragma mark - DRAWING
+
+- (void)drawTextInRect:(CGRect)rect {
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();  
+    
+    CGContextSaveGState(context);
+    CGContextSetTextDrawingMode(context, kCGTextFillStroke);
+    
+    /* draw sans outline */
+    [super drawTextInRect:rect];
+    
+    CGImageRef image = CGBitmapContextCreateImage(context);
+    
+    CGContextSetLineWidth(context, _outlineWidth);
+    CGContextSetLineJoin(context, kCGLineJoinBevel);
+    CGContextSetTextDrawingMode(context, kCGTextStroke);
+    
+    /* color */
+    self.textColor = _outlineColour;
+    
+    /* having these offsets makes for some interesting effects */
+    [super drawTextInRect:CGRectMake(rect.origin.x + _xOffset, rect.origin.y + _yOffset, rect.size.width, rect.size.height)];
+    
+    // Draw image on top of the outline
+    CGContextTranslateCTM(context, 0.0f, rect.size.height);
+    CGContextScaleCTM(context, 1.0f, -1.0f);
+    CGContextDrawImage(context, rect, image);
+    
+    CGImageRelease(image);
+    
+    return;
+}
+
 #pragma mark - CLEANUP CREW
 
 - (void)dealloc {
