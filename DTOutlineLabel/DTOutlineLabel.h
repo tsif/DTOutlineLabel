@@ -14,4 +14,7 @@
 @property(nonatomic, strong) UIColor* outlineColour;
 @property(nonatomic)         CGFloat  outlineWidth;
 
+@property(nonatomic)         CGFloat  xOffset;
+@property(nonatomic)         CGFloat  yOffset;
+
 @end
